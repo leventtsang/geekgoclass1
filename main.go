@@ -6,20 +6,6 @@ import (
 	"math/rand"
 )
 
-func removeAt[T any](s []T, index int) []T {
-	if index < 0 || index >= len(s) {
-		return s // 索引越界，返回原始切片
-	}
-	copy(s[index:], s[index+1:])
-	s = s[:len(s)-1]
-	if cap(s) > 2*len(s) { // 如果容量是长度的两倍以上
-		newSlice := make([]T, len(s))
-		copy(newSlice, s)
-		s = newSlice
-	}
-	return s
-}
-
 func main() {
 	var index int
 	fmt.Print("输入要删除的元素的索引（从0开始）：")
@@ -30,12 +16,13 @@ func main() {
 	}
 
 	s := generic.GenerateSlice(10, func(r *rand.Rand) int { return r.Intn(100) })
-	fmt.Println(removeAt(s, index))
+	fmt.Println("原始整数切片：", s)
+	fmt.Println("删除后的整数切片：", generic.RemoveAt(s, index))
 
-	s2 := make([]string, len(s))
+	s2 := make([]string, 10)
 	for i := range s2 {
 		s2[i] = string(rune('a' + i)) // 将整数转换为字母
 	}
-	fmt.Println(removeAt(s2, index))
-
+	fmt.Println("原始字符串切片：", s2)
+	fmt.Println("删除后的字符串切片：", generic.RemoveAt(s2, index))
 }
